@@ -124,7 +124,7 @@ class SingleCoursePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Add Assignment',
+                          'Add Note',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,

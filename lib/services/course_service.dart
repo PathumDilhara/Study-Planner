@@ -4,7 +4,7 @@ import 'package:study_planner/models/course_model.dart';
 class CourseService {
   // create the firestore collection reference
   final CollectionReference courseCollection =
-      FirebaseFirestore.instance.collection("course");
+      FirebaseFirestore.instance.collection("courses");
 
   // Add a new course
   Future<void> createNewCourse(CourseModel course) async {

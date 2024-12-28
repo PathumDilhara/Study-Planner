@@ -1,10 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:study_planner/services/assignment_services.dart';
 import 'package:study_planner/widgets/custom_button.dart';
 import 'package:study_planner/widgets/custom_inputfield_widget.dart';
 
+import '../models/assignment_model.dart';
 import '../models/course_model.dart';
+import '../widgets/snackbar_widget.dart';
 
 class AddNewAssignmentPage extends StatelessWidget {
   final CourseModel course;
@@ -62,9 +64,35 @@ class AddNewAssignmentPage extends StatelessWidget {
   // Submit form
   void _submitForm(BuildContext context) async {
     if(_formKey.currentState!.validate()){
-      print(_selectedDate.value);
+      try {
+        final AssignmentModel assignment = AssignmentModel(
+          id: "",
+          name: _assignmentNameController.text,
+          description: _assignmentDescriptionController.text,
+          duration: _assignmentDurationController.text,
+          dueDate: _selectedDate.value,
+          dueTime: _selectedTime.value,
+        );
+
+        // Add assignment to the database
+        AssignmentServices().createAssignment(course.id, assignment);
+        snackBarWidget(
+          context: context,
+          title: "Assignment added successfully",
+        );
+
+        await Future.delayed(Duration(seconds: 2));
+
+        GoRouter.of(context).go("/");
+      } catch (err) {
+        print(err);
+        snackBarWidget(
+          context: context,
+          title: "Failed to submit assignment",
+        );
+      }
     }
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -202,3 +230,4 @@ class AddNewAssignmentPage extends StatelessWidget {
     );
   }
 }
+
